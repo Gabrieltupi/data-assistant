@@ -1,0 +1,23 @@
+- nome: gasto
+  sinonimos: [gasto, quanto gastou, quem mais gastou, total de gastos]
+  formula: SUM da medida de valor na fato de compras
+  nao_usar: clientes.valor_total_gasto
+
+- nome: quem_mais_comprou
+  sinonimos: [quem mais comprou]
+  formula: SUM da medida de valor na fato de compras
+  nao_usar: clientes.valor_total_gasto
+  count_quando: a pergunta disser vezes, quantidade ou número de compras
+
+- nome: ticket_suporte
+  sinonimos: [ticket de suporte, chamado, tickets resolvidos]
+  formula: COUNT(*) na fato de suporte
+  nao_usar: AVG/SUM em coluna identidade
+
+- nome: ticket_compra
+  sinonimos: [ticket médio de compra, ticket médio, AOV]
+  formula: AVG da medida de valor na fato de compras
+
+- nome: assuntos_do_banco
+  sinonimos: [chamados, compras, clientes, campanhas]
+  formula: sempre gerar SQL; OUT_OF_SCOPE só se o assunto não existir nas tabelas
