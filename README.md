@@ -4,6 +4,8 @@ Assistente de dados inteligente que responde perguntas em linguagem natural sobr
 
 Desenvolvido como desafio técnico para a vaga de **Engenheiro de IA Pleno** na [Franq Open Banking](https://franq.com.br).
 
+Tratei o desafio como um produto. Quem pergunta em português precisa sair com uma resposta que dá para usar: o número que o banco sustenta, a tabela ou o gráfico na forma do resultado, e o raciocínio aberto para conferir o SQL. O agente é assertivo no que os dados sustentam e direto quando a pergunta sai desse banco. É assim que eu trabalho: a experiência de quem usa, e um agente que se comporta como ferramenta de verdade.
+
 ---
 
 ## O que ele faz
@@ -197,10 +199,23 @@ python -m pytest
 
 ---
 
-## Sugestões de melhoria (além do MVP)
+## Sugestões de melhoria
 
-- Adicionar LangFuse para rastreabilidade em produção
-- Expor o agente via FastAPI + LangServe para integração com outros sistemas
-- Persistência do histórico em banco para sessões multi-dia
-- Avaliação automática (eval suite) com perguntas esperadas e respostas verificadas
-- Suporte a upload de banco SQLite pelo próprio usuário
+### Como produto, em produção
+
+- Resposta em streaming, com o passo atual na tela, para a espera do modelo não parecer travamento.
+- Pergunta de volta quando uma palavra aponta para duas métricas. O agente confirma qual delas, em vez de escolher.
+- A pergunta seguinte poder usar a tabela da anterior, não só a prosa recente.
+- Gráfico na forma que a pessoa pedir, além da forma que o resultado já sugere.
+- Sessão salva, para continuar no dia seguinte.
+- Acesso por usuário, timeout e teto de custo do modelo.
+- Suite de avaliação nas perguntas conhecidas, rodada antes de cada mudança de prompt.
+
+### Técnicas
+
+- LangFuse com o mesmo rastro de hoje: SQL, reparo e latência.
+- API (FastAPI) na frente do grafo, para o Streamlit não ser a única porta.
+- Tool calling só com `run_sql` e `refuse`. O guard continua fora do modelo, e isso vale quando o modelo devolve tool call estável.
+- Planejador para pergunta que precisa de mais de uma consulta, com resultado intermediário.
+- O briefing marcar o topo e o fundo da lista, para a redação não reinterpretar um ranking que o código já tem.
+- Taxa de interação de campanha no glossário, com o denominador explícito.
